@@ -1,0 +1,50 @@
+<launch> 
+
+	<!-- 实现无人机在未知环境下进行2维空间上的自主探索-->
+	<!-- 
+	desire_posz_：期望高度 
+	-->
+    <arg name="mavlink_udp_port" default="14560"/>
+    <!-- 加载urdf以便在rviz上显示uav模型 -->
+    <arg name="model" default="$(find simulation)/urdf/iris_depth_camera/xacro/urdf/iris_base.xacro" />
+    <arg name="rotors_description_dir" default="$(find simulation)/urdf/iris_depth_camera/xacro" />
+    <arg name="cmd" default="$(find xacro)/xacro $(arg model) rotors_description_dir:=$(arg rotors_description_dir) mavlink_udp_port:=$(arg mavlink_udp_port) --inorder"/>
+    <param command="$(arg cmd)" name="robot_description" />
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+
+  <arg name="world_path" default="$(find simulation)/worlds/corridors_1.world" />
+
+  <include file="$(find simulation)/launch/px4/2Dlidar_px4.launch">
+    <arg name="world" value="$(arg world_path)" />
+    <arg name="x" value="3.5"/>
+    <arg name="y" value="2.5"/>
+    <arg name="z" value="0.5"/>
+    <arg name="R" value="0"/>
+    <arg name="P" value="0"/>
+    <arg name="Y" value="0"/>
+  </include>
+    <param name="/mavros/local_position/tf/send" type="bool" value="true" />
+    <param name="/mavros/local_position/frame_id" type="str" value="base_link" />
+    <param name="/mavros/local_position/tf/frame_id" type="str" value="odom" />
+
+
+    <include file="$(find ros_slam)/launch/gmapping.launch">
+    </include>
+
+    <include file="$(find ros_navigation)/launch/nav_px4.launch">
+    </include>
+
+    <include file="$(find px4_control)/launch/ros_2DNav.launch">
+    </include>
+
+    <include file="$(find explore_lite)/launch/explore.launch">
+    </include>
+
+    <node pkg="simulation" type="keyboard_control_px4.py" name="keyboard_control_px4" output="screen" launch-prefix="gnome-terminal --tab -e">
+    </node>
+
+</launch>
+

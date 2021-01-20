@@ -1,0 +1,7 @@
+<launch> 
+
+  <include file="$(find tracking)/launch/tracking.launch">
+  </include>
+
+</launch>
+

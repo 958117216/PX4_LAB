@@ -1,0 +1,15 @@
+<launch> 
+
+<!-- 
+	使用moveit包对px4无人机进行路径规划，感谢：https://uenota.github.io/dronedoc/moveit/index.html
+-->
+
+     <!-- Moveit -->
+    <include file="$(find iris_moveit_config)/launch/move_group.launch" >
+        <arg name="fake_execution" value="false" />
+    </include>
+
+    <node pkg="dronedoc" name="drone_controller" type="drone_controller" output="screen"/>
+
+</launch>
+

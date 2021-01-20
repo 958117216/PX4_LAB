@@ -1,0 +1,13 @@
+<launch>
+
+  
+
+  <node pkg="depth2pointcloud" type="D2PCL_node" name="D2PCL_node" output="screen">
+        <param name="cx" value="320.0"/>
+        <param name="cy" value="240.0"/>
+        <param name="fx" value="554.3826904296875"/>
+        <param name="fy" value="554.3826904296875"/>
+    </node>
+
+
+  </launch>

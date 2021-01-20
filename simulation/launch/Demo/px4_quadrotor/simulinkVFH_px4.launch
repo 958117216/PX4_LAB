@@ -1,0 +1,21 @@
+<launch> 
+
+  <arg name="world_path" default="$(find simulation)/worlds/densityColumn.world" />
+
+  <include file="$(find simulation)/launch/px4/2Dlidar_px4_vfh.launch">
+    <arg name="world" value="$(arg world_path)" />
+    <arg name="x" value="25"/>
+    <arg name="y" value="20"/>
+    <arg name="z" value="0.1"/>
+    <arg name="R" value="0"/>
+    <arg name="P" value="0"/>
+    <arg name="Y" value="0"/>
+  </include>
+
+  <include file="$(find px4_control)/launch/simulinkVFH.launch" >
+  </include>
+
+	<node pkg="simulation" type="keyboard_control_px4.py" name="keyboard_control_px4" output="screen" launch-prefix="gnome-terminal --tab -e">
+    </node>
+</launch>
+

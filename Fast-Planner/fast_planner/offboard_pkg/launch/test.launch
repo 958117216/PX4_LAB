@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="offboard_pkg" name="offboard_pkg" type="offboard_pkg" output="screen"/>
+
+</launch>
